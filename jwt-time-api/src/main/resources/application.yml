@@ -1,0 +1,10 @@
+spring:
+    data:
+        mongodb:
+            auto-index-creation: true
+            username: root
+            password: password
+            database: upskill-oauth2-jwt
+            port: 27017
+            host: localhost
+            authentication-database: admin
