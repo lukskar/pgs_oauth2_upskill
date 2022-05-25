@@ -1,0 +1,10 @@
+spring:
+    data:
+        mongodb:
+            auto-index-creation: true
+            username: root
+            password: password
+            database: upskill-db
+            port: 27017
+            host: localhost
+            authentication-database: admin
