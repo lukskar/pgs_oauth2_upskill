@@ -8,9 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Slf4j
 @RestController
-public class UserController {
+public class UserController implements SessionAwareController {
 
     private final UserService userService;
 
@@ -19,8 +21,14 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public void login(@RequestBody final UserLoginRequest userLoginRequest) {
-        userService.login(userLoginRequest);
+    public void login(@RequestBody final UserLoginRequest userLoginRequest,
+                      HttpServletRequest request) {
+        userService.login(userLoginRequest, getSessionId(request));
+    }
+
+    @PostMapping("/user/logout")
+    public void logout(HttpServletRequest request) {
+        userService.logout(getSessionId(request));
     }
 
     @PostMapping("/user/register")

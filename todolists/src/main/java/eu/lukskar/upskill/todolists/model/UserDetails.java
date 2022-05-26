@@ -7,11 +7,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Builder
-@Document("ToDoTask")
-public class ToDoTask {
+@Document("UserDetails")
+public class UserDetails {
     @Id private String id;
-    private String userId;
-    private String name;
-    private String dueDate;
-    private boolean done;
+    private String username;
+    private String passwordHash;
+    private String fullName;
 }

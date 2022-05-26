@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
 @RestController
-public class ToDoTaskController {
+public class ToDoTaskController implements SessionAwareController {
 
     private final ToDoTaskService toDoTaskService;
 
@@ -26,27 +27,32 @@ public class ToDoTaskController {
     }
 
     @GetMapping("/task")
-    public List<ToDoTask> getTasks() {
-        return toDoTaskService.getTasks();
+    public List<ToDoTask> getTasks(HttpServletRequest request) {
+        return toDoTaskService.getTasks(getSessionId(request));
     }
 
     @GetMapping("/task/{taskId}")
-    public ToDoTask getTask(@PathVariable final String taskId) {
-        return toDoTaskService.getTask(taskId);
+    public ToDoTask getTask(@PathVariable final String taskId,
+                            HttpServletRequest request) {
+        return toDoTaskService.getTask(getSessionId(request), taskId);
     }
 
     @PostMapping("/task")
-    public ToDoTask createTask(@RequestBody final ToDoTaskCreateRequest toDoTaskCreateRequest) {
-        return toDoTaskService.createTask(toDoTaskCreateRequest);
+    public ToDoTask createTask(@RequestBody final ToDoTaskCreateRequest toDoTaskCreateRequest,
+                               HttpServletRequest request) {
+        return toDoTaskService.createTask(getSessionId(request), toDoTaskCreateRequest);
     }
 
     @PutMapping("/task/{taskId}")
-    public ToDoTask updateTask(@PathVariable final String taskId, @RequestBody final ToDoTaskUpdateRequest toDoTaskUpdateRequest) {
-        return toDoTaskService.updateTask(taskId, toDoTaskUpdateRequest);
+    public ToDoTask updateTask(@PathVariable final String taskId,
+                               @RequestBody final ToDoTaskUpdateRequest toDoTaskUpdateRequest,
+                               HttpServletRequest request) {
+        return toDoTaskService.updateTask(getSessionId(request), taskId, toDoTaskUpdateRequest);
     }
 
     @DeleteMapping("/task/{taskId}")
-    public void deleteTask(@PathVariable final String taskId) {
-        toDoTaskService.deleteTask(taskId);
+    public void deleteTask(@PathVariable final String taskId,
+                           HttpServletRequest request) {
+        toDoTaskService.deleteTask(getSessionId(request), taskId);
     }
 }
