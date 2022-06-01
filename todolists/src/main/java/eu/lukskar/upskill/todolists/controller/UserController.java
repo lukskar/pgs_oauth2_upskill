@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Slf4j
 @RestController
 public class UserController {
@@ -24,8 +26,8 @@ public class UserController {
     }
 
     @PostMapping("/user/logout")
-    public void logout() {
-        userService.logout();
+    public void logout(final HttpServletRequest httpRequest) {
+        userService.logout(httpRequest);
     }
 
     @PostMapping("/user/register")
