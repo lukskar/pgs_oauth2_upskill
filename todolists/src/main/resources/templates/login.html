@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDoLists - Login Page</title>
+</head>
+<body>
+    <span>
+        <div align="center">
+            Hello!
+        </div>
+        <br/>
+
+        <div sec:authorize="!isAuthenticated()" align="center">
+            <div>
+                To continue, please log in using following form:
+            </div><br/>
+            <form th:action="@{/login.html}" method="post">
+                <label for="username">Username </label>:
+                <input type="text" id="username" name="username" autofocus="autofocus" /> <br/><br/>
+                <label for="password">Password </label>:
+                <input type="password" id="password" name="password" /> <br/><br/>
+                <input type="submit" value="Log in" />
+            </form>
+        </div>
+
+        <div sec:authorize="isAuthenticated()" align="center">
+            You are already logged in as: <span sec:authentication="name"></span><br/>
+            You can use <a th:href="@{/swagger-ui.html}">Swagger UI</a> for further operations <br/><br/>
+            <form th:action="@{/logout.html}" method="post">
+                <input type="submit" value="Log out"/>
+            </form>
+        </div>
+
+    </span>
+</body>
+</html>

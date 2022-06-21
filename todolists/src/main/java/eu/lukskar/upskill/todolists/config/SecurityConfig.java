@@ -18,6 +18,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .formLogin(formLoginCustomizer -> formLoginCustomizer
+                        .loginPage("/login.html")
+                        .defaultSuccessUrl("/login", true))
+                .logout(logoutCustomizer -> logoutCustomizer
+                        .logoutUrl("/logout.html")
+                        .logoutSuccessUrl("/login")
+                        .clearAuthentication(true)
+                        .invalidateHttpSession(true))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sessionCustomizer -> sessionCustomizer.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authorizeRequests(requestCustomizer -> requestCustomizer
