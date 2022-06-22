@@ -21,6 +21,9 @@ public class SecurityConfig {
                 .formLogin(formLoginCustomizer -> formLoginCustomizer
                         .loginPage("/login.html")
                         .defaultSuccessUrl("/login", true))
+                .oauth2Login(oauth2Customizer -> oauth2Customizer
+                        .loginPage("/login.html")
+                        .defaultSuccessUrl("/login", true))
                 .logout(logoutCustomizer -> logoutCustomizer
                         .logoutUrl("/logout.html")
                         .logoutSuccessUrl("/login")

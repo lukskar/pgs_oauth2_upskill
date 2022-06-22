@@ -8,3 +8,13 @@ spring:
             port: 27017
             host: localhost
             authentication-database: admin
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        client-id: 523883094612-b702gbmr0akn9pa17f2r8hkvd2ua8kaj.apps.googleusercontent.com
+                        client-secret: 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
+                        scope:
+                            - email
+                            - profile
