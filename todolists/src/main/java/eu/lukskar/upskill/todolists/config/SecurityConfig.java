@@ -1,5 +1,6 @@
 package eu.lukskar.upskill.todolists.config;
 
+import eu.lukskar.upskill.todolists.service.OAuth2AuthenticationManager;
 import eu.lukskar.upskill.todolists.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Autowired
-    private UserService userService;
+    private OAuth2AuthenticationManager oAuth2AuthenticationManager;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -23,7 +24,8 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/login", true))
                 .oauth2Login(oauth2Customizer -> oauth2Customizer
                         .loginPage("/login.html")
-                        .defaultSuccessUrl("/login", true))
+                        .defaultSuccessUrl("/login", true)
+                        .userInfoEndpoint().userService(oAuth2AuthenticationManager))
                 .logout(logoutCustomizer -> logoutCustomizer
                         .logoutUrl("/logout.html")
                         .logoutSuccessUrl("/login")

@@ -3,6 +3,7 @@ package eu.lukskar.upskill.todolists.service;
 import eu.lukskar.upskill.todolists.dto.UserLoginRequest;
 import eu.lukskar.upskill.todolists.dto.UserRegistrationRequest;
 import eu.lukskar.upskill.todolists.model.DbUserDetails;
+import eu.lukskar.upskill.todolists.model.RegistrationType;
 import eu.lukskar.upskill.todolists.repository.UserDetailsRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,13 +47,18 @@ public class UserService {
         logoutHandler.logout(httpRequest, null, null);
     }
 
-    public void register(final UserRegistrationRequest userRegistrationRequest) {
-        String passwordHash = passwordEncoder.encode(userRegistrationRequest.getPassword());
+    public DbUserDetails register(final UserRegistrationRequest userRegistrationRequest, String registrationType) {
+        String passwordHash = registrationType.equals(RegistrationType.REGULAR) ?
+                passwordEncoder.encode(userRegistrationRequest.getPassword()) : null;
+
         DbUserDetails newUser = DbUserDetails.builder()
                 .username(userRegistrationRequest.getUsername())
                 .passwordHash(passwordHash)
                 .fullName(userRegistrationRequest.getFullName())
+                .registrationType(registrationType)
+                .email(userRegistrationRequest.getEmail())
                 .build();
-        userDetailsRepository.save(newUser);
+
+        return userDetailsRepository.save(newUser);
     }
 }

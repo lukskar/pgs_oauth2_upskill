@@ -2,6 +2,7 @@ package eu.lukskar.upskill.todolists.controller;
 
 import eu.lukskar.upskill.todolists.dto.UserLoginRequest;
 import eu.lukskar.upskill.todolists.dto.UserRegistrationRequest;
+import eu.lukskar.upskill.todolists.model.RegistrationType;
 import eu.lukskar.upskill.todolists.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,6 @@ public class UserController {
 
     @PostMapping("/user/register")
     public void register(@RequestBody final UserRegistrationRequest userRegistrationRequest) {
-        userService.register(userRegistrationRequest);
+        userService.register(userRegistrationRequest, RegistrationType.REGULAR);
     }
 }
