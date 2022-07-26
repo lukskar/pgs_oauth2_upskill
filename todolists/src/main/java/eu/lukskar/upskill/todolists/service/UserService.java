@@ -1,5 +1,7 @@
 package eu.lukskar.upskill.todolists.service;
 
+import eu.lukskar.upskill.todolists.dto.AuthUserDetails;
+import eu.lukskar.upskill.todolists.dto.SimpleUserInfo;
 import eu.lukskar.upskill.todolists.dto.UserLoginRequest;
 import eu.lukskar.upskill.todolists.dto.UserRegistrationRequest;
 import eu.lukskar.upskill.todolists.model.DbUserDetails;
@@ -28,6 +30,10 @@ public class UserService {
         this.userDetailsRepository = userDetailsRepository;
         this.authenticationManager = authenticationManager;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public SimpleUserInfo getUserInfo(final AuthUserDetails userDetails) {
+        return SimpleUserInfo.builder().fullName(userDetails.getName()).build();
     }
 
     public void login(final UserLoginRequest userLoginRequest) {
