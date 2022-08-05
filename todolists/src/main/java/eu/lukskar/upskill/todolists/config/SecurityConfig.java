@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionCustomizer -> sessionCustomizer.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authorizeRequests(requestCustomizer -> requestCustomizer
                         .antMatchers("/task**").authenticated()
+                        .antMatchers("/task/*/reminder").hasAuthority(RegistrationType.OAUTH2_GOOGLE)
                         .antMatchers("/user/info").hasAuthority(RegistrationType.OAUTH2_GOOGLE)
                         .anyRequest().permitAll())
                 .httpBasic(AbstractHttpConfigurer::disable)
