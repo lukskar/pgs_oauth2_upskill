@@ -7,12 +7,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Builder
-@Document("UserDetails")
+@Document("DbUserDetails")
 public class DbUserDetails {
     @Id private String id;
     private String email;
     private String username;
-    private String passwordHash;
     private String fullName;
     private String registrationType;
 }

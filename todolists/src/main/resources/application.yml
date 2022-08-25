@@ -12,11 +12,15 @@ spring:
         oauth2:
             client:
                 registration:
-                    google:
-                        client-id: 523883094612-b702gbmr0akn9pa17f2r8hkvd2ua8kaj.apps.googleusercontent.com
-                        client-secret: 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
+                    auth0:
+                        client-id: P614y4vJHfyGe8FEU7eOQX1qAPp70tpe
+                        client-secret: SAPKOfNipjvM1ItLkoigTv7K3AKKIuaxYehKzt_koJpA8RLf5aTcStGHTjAcMTK5
                         scope:
-                            - email
+                            - openid
                             - profile
-                            - https://www.googleapis.com/auth/calendar.readonly
-                            - https://www.googleapis.com/auth/calendar.events
+                            - email
+                provider:
+                    auth0:
+                        issuer-uri: https://dev--eofa3x5.us.auth0.com/
+                        management-client-id: XhKXHJohHyUfS8d5po0Mnag0LPhLkkdp
+                        management-client-secret: CgxZnlKmhL5qGACfxmfSt-3Hp9HEPizaTzFKrZ6_6OKP6u2v2m2iBj4r90stpNW0

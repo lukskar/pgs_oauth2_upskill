@@ -1,10 +1,13 @@
 package eu.lukskar.upskill.todolists.service;
 
 import com.google.api.services.calendar.model.Event;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import eu.lukskar.upskill.todolists.dto.AuthUserDetails;
 import eu.lukskar.upskill.todolists.dto.CreateReminderRequest;
 import eu.lukskar.upskill.todolists.dto.CreateReminderResponse;
 import eu.lukskar.upskill.todolists.dto.ToDoTaskCreateRequest;
 import eu.lukskar.upskill.todolists.dto.ToDoTaskUpdateRequest;
+import eu.lukskar.upskill.todolists.model.RegistrationType;
 import eu.lukskar.upskill.todolists.model.ToDoTask;
 import eu.lukskar.upskill.todolists.repository.ToDoTaskRepository;
 import org.springframework.http.HttpStatus;
@@ -19,10 +22,13 @@ import java.util.List;
 public class ToDoTaskService {
 
     private final ToDoTaskRepository toDoTaskRepository;
+    private final Auth0ManagementService auth0ManagementService;
     private final GoogleCalendarService calendarService;
 
-    public ToDoTaskService(final ToDoTaskRepository toDoTaskRepository, final GoogleCalendarService calendarService) {
+    public ToDoTaskService(final ToDoTaskRepository toDoTaskRepository, final Auth0ManagementService auth0ManagementService,
+                           final GoogleCalendarService calendarService) {
         this.toDoTaskRepository = toDoTaskRepository;
+        this.auth0ManagementService = auth0ManagementService;
         this.calendarService = calendarService;
     }
 
@@ -63,9 +69,10 @@ public class ToDoTaskService {
     public CreateReminderResponse createReminder(final String userId,
                                                  final String taskId,
                                                  final CreateReminderRequest reminderRequest,
-                                                 final String googleAccessToken)
-            throws GeneralSecurityException, IOException {
+                                                 final AuthUserDetails userDetails)
+            throws GeneralSecurityException, IOException, UnirestException {
         ToDoTask toRemind = getTask(userId, taskId);
+        String googleAccessToken = auth0ManagementService.getIdPAccessToken(userDetails.getUserInfo().getSubject(), RegistrationType.OAUTH2_GOOGLE);
         Event inserted = calendarService.publishReminderFor(toRemind, reminderRequest.getDateTime(), googleAccessToken);
         return CreateReminderResponse.builder()
                 .reminderLink(inserted.getHtmlLink())

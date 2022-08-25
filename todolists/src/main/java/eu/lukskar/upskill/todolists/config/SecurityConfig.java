@@ -1,7 +1,8 @@
 package eu.lukskar.upskill.todolists.config;
 
 import eu.lukskar.upskill.todolists.model.RegistrationType;
-import eu.lukskar.upskill.todolists.service.OAuth2AuthenticationManager;
+import eu.lukskar.upskill.todolists.service.LogoutHandler;
+import eu.lukskar.upskill.todolists.service.OidcUsersManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,23 +17,21 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 public class SecurityConfig {
 
     @Autowired
-    private OAuth2AuthenticationManager oAuth2AuthenticationManager;
+    private OidcUsersManagerService oidcUsersManagerService;
+
+    @Autowired
+    private LogoutHandler logoutHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .formLogin(formLoginCustomizer -> formLoginCustomizer
-                        .loginPage("/login.html")
-                        .defaultSuccessUrl("/login", true))
                 .oauth2Login(oauth2Customizer -> oauth2Customizer
-                        .loginPage("/login.html")
                         .defaultSuccessUrl("/login", true)
-                        .userInfoEndpoint().userService(oAuth2AuthenticationManager))
+                        .userInfoEndpoint()
+                        .oidcUserService(oidcUsersManagerService))
                 .logout(logoutCustomizer -> logoutCustomizer
-                        .logoutUrl("/logout.html")
-                        .logoutSuccessUrl("/login")
-                        .clearAuthentication(true)
-                        .invalidateHttpSession(true))
+                        .logoutUrl("/logout")
+                        .addLogoutHandler(logoutHandler))
                 .exceptionHandling(exceptionHandlingCustomizer -> exceptionHandlingCustomizer
                         .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .csrf(AbstractHttpConfigurer::disable)

@@ -8,7 +8,6 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized @Builder
 public class UserRegistrationRequest {
     private final String username;
-    private final String password;
     private final String fullName;
     private final String email;
 }

@@ -1,5 +1,6 @@
 package eu.lukskar.upskill.todolists.controller;
 
+import com.mashape.unirest.http.exceptions.UnirestException;
 import eu.lukskar.upskill.todolists.dto.AuthUserDetails;
 import eu.lukskar.upskill.todolists.dto.CreateReminderRequest;
 import eu.lukskar.upskill.todolists.dto.CreateReminderResponse;
@@ -10,8 +11,6 @@ import eu.lukskar.upskill.todolists.service.ToDoTaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.annotation.RegisteredOAuth2AuthorizedClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,9 +66,8 @@ public class ToDoTaskController {
     @PostMapping("/task/{taskId}/reminder")
     public CreateReminderResponse createReminder(@PathVariable final String taskId,
                                                  @RequestBody final CreateReminderRequest reminderRequest,
-                                                 @AuthenticationPrincipal final AuthUserDetails userDetails,
-                                                 @RegisteredOAuth2AuthorizedClient("google") OAuth2AuthorizedClient oAuth2Client)
-            throws GeneralSecurityException, IOException {
-        return toDoTaskService.createReminder(userDetails.getId(), taskId, reminderRequest, oAuth2Client.getAccessToken().getTokenValue());
+                                                 @AuthenticationPrincipal final AuthUserDetails userDetails)
+            throws GeneralSecurityException, IOException, UnirestException {
+        return toDoTaskService.createReminder(userDetails.getId(), taskId, reminderRequest, userDetails);
     }
 }
