@@ -1,0 +1,19 @@
+server:
+  port: 9090
+auth0:
+  audience: https://todolists/api/subscription
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev--eofa3x5.us.auth0.com/
+  data:
+    mongodb:
+      auto-index-creation: true
+      username: root
+      password: password
+      database: upskill-db
+      port: 27017
+      host: localhost
+      authentication-database: admin
