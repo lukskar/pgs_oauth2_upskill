@@ -24,12 +24,14 @@ public class ToDoTaskService {
     private final ToDoTaskRepository toDoTaskRepository;
     private final Auth0ManagementService auth0ManagementService;
     private final GoogleCalendarService calendarService;
+    private final SubscriptionService subscriptionService;
 
     public ToDoTaskService(final ToDoTaskRepository toDoTaskRepository, final Auth0ManagementService auth0ManagementService,
-                           final GoogleCalendarService calendarService) {
+                           final GoogleCalendarService calendarService, final SubscriptionService subscriptionService) {
         this.toDoTaskRepository = toDoTaskRepository;
         this.auth0ManagementService = auth0ManagementService;
         this.calendarService = calendarService;
+        this.subscriptionService = subscriptionService;
     }
 
     public List<ToDoTask> getTasks(final String userId) {
