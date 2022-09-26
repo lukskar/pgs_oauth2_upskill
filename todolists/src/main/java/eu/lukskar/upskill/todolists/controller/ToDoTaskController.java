@@ -10,6 +10,7 @@ import eu.lukskar.upskill.todolists.model.ToDoTask;
 import eu.lukskar.upskill.todolists.service.ToDoTaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,12 +46,14 @@ public class ToDoTaskController {
     }
 
     @PostMapping("/task")
+    @PreAuthorize("@subscriptionService.isUserSubscriptionActive(#userDetails.id)")
     public ToDoTask createTask(@RequestBody final ToDoTaskCreateRequest toDoTaskCreateRequest,
                                @AuthenticationPrincipal final AuthUserDetails userDetails) {
         return toDoTaskService.createTask(userDetails.getId(), toDoTaskCreateRequest);
     }
 
     @PutMapping("/task/{taskId}")
+    @PreAuthorize("@subscriptionService.isUserSubscriptionActive(#userDetails.id)")
     public ToDoTask updateTask(@PathVariable final String taskId,
                                @RequestBody final ToDoTaskUpdateRequest toDoTaskUpdateRequest,
                                @AuthenticationPrincipal final AuthUserDetails userDetails) {
@@ -58,12 +61,14 @@ public class ToDoTaskController {
     }
 
     @DeleteMapping("/task/{taskId}")
+    @PreAuthorize("@subscriptionService.isUserSubscriptionActive(#userDetails.id)")
     public void deleteTask(@PathVariable final String taskId, @AuthenticationPrincipal final AuthUserDetails userDetails) {
         toDoTaskService.deleteTask(userDetails.getId(), taskId);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/task/{taskId}/reminder")
+    @PreAuthorize("@subscriptionService.isUserSubscriptionActive(#userDetails.id)")
     public CreateReminderResponse createReminder(@PathVariable final String taskId,
                                                  @RequestBody final CreateReminderRequest reminderRequest,
                                                  @AuthenticationPrincipal final AuthUserDetails userDetails)

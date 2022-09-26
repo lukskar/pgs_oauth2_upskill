@@ -21,6 +21,9 @@ public class OidcUsersManagerService extends OidcUserService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SubscriptionService subscriptionService;
+
     public OidcUser loadUser(OidcUserRequest oidcUserRequest) {
         OidcUser oidcUser =  super.loadUser(oidcUserRequest);
         Optional<DbUserDetails> searchDetails = userDetailsRepository.findByEmail(oidcUser.getAttribute("email"));
@@ -33,6 +36,7 @@ public class OidcUsersManagerService extends OidcUserService {
                             .fullName(oidcUser.getAttribute("name"))
                             .email(oidcUser.getAttribute("email"))
                             .build(), registrationType(oidcUser));
+            subscriptionService.createTrialSubscription(userDetails.getId());
         } else {
             userDetails = searchDetails.get();
         }
